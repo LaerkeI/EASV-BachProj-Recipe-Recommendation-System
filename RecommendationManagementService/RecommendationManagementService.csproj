@@ -13,4 +13,11 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Infrastructure\Neo4j\DockerHelper\" />
+    <Folder Include="Infrastructure\Neo4j\Migrations\" />
+    <Folder Include="Application\" />
+    <Folder Include="Presentation\Controllers\" />
+  </ItemGroup>
+
 </Project>

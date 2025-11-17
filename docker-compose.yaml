@@ -1,0 +1,18 @@
+services:
+  neo4j:
+    container_name: neo4j
+    image: neo4j:5.25-community
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      NEO4J_AUTH: neo4j/MySuperStrongPassword123
+      NEO4J_dbms_default__database: recommendation-db
+    volumes:
+      - neo4j_data:/data
+      # Mount the Neo4j folder containing entrypoint + migrations
+      - ./RecommendationManagementService/Infrastructure/Neo4j:/var/lib/neo4j/import
+    entrypoint: ["/var/lib/neo4j/import/neo4j_entrypoint.sh"]
+
+volumes:
+  neo4j_data:
