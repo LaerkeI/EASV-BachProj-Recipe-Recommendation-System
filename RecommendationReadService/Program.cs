@@ -1,5 +1,5 @@
 
-namespace RecommendationManagementService
+namespace RecommendationReadService
 {
     public class Program
     {
