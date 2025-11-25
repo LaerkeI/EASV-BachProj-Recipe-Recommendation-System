@@ -1,3 +1,7 @@
+using MongoDB.Driver;
+using RecipeManagementService.Application.Services;
+using RecipeManagementService.Domain.Interfaces;
+using RecipeManagementService.Infrastructure.Repositories;
 
 namespace RecipeManagementService
 {
@@ -8,6 +12,21 @@ namespace RecipeManagementService
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            builder.Services.AddSingleton<IMongoClient>(sp =>
+            {
+                var configuration = sp.GetRequiredService<IConfiguration>();
+                var mongoConnectionString = configuration.GetConnectionString("MongoDBConnection");
+
+                if (mongoConnectionString == null)
+                    throw new Exception("MongoDBConnection was not loaded");
+
+                return new MongoClient(mongoConnectionString);
+            });
+
+            builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
+
+            builder.Services.AddScoped<IRecipeService, RecipeService>();
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
