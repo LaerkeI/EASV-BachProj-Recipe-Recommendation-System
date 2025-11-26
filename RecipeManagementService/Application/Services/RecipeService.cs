@@ -1,5 +1,8 @@
 ﻿using RecipeManagementService.Domain.Entities;
 using RecipeManagementService.Domain.Interfaces;
+using RecipeManagementService.Infrastructure.Messaging;
+using RecipeManagementService.Infrastructure.Messaging.Events;
+using System.Text.Json;
 
 namespace RecipeManagementService.Application.Services
 {
@@ -9,32 +12,32 @@ namespace RecipeManagementService.Application.Services
 
         public RecipeService(IRecipeRepository recipeRepository)
         {
-            _recipeRepository = recipeRepository;
+            _recipeRepository = recipeRepository;            
         }
 
-        public async Task<List<Recipe>> GetAllRecipesAsync()
+        public async Task<List<Recipe>> GetAllRecipes()
         {
-            return await _recipeRepository.GetAllRecipesAsync();
+            return await _recipeRepository.GetAllRecipes();
         }
 
-        public async Task<Recipe?> GetRecipeByIdAsync(string recipeId)
+        public async Task<Recipe?> GetRecipeByRecipeId(string recipeId)
         {
-            return await _recipeRepository.GetRecipeByIdAsync(recipeId);
+            return await _recipeRepository.GetRecipeByRecipeId(recipeId);
         }
 
-        public async Task CreateRecipeAsync(Recipe recipe)
+        public async Task CreateRecipe(Recipe recipe)
         {
-            await _recipeRepository.CreateRecipeAsync(recipe);
+            await _recipeRepository.CreateRecipe(recipe);
         }
 
-        public async Task<bool> UpdateRecipeAsync(string recipeId, Recipe updatedRecipe)
+        public async Task<bool> UpdateRecipe(string recipeId, Recipe updatedRecipe)
         {
-            return await _recipeRepository.UpdateRecipeAsync(recipeId, updatedRecipe);
+            return await _recipeRepository.UpdateRecipe(recipeId, updatedRecipe);
         }
 
-        public async Task<bool> DeleteRecipeAsync(string recipeId)
+        public async Task<bool> DeleteRecipe(string recipeId)
         {
-            return await _recipeRepository.DeleteRecipeAsync(recipeId);
+            return await _recipeRepository.DeleteRecipe(recipeId);
         }
     }
 }

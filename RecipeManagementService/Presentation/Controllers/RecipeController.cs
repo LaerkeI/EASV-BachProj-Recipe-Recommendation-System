@@ -17,17 +17,17 @@ namespace RecipeManagementService.Presentation.Controllers
 
         // GET: api/Recipe
         [HttpGet]
-        public async Task<ActionResult<List<Recipe>>> GetAllRecipesAsync()
+        public async Task<ActionResult<List<Recipe>>> GetAllRecipes()
         {
-            var recipes = await _recipeService.GetAllRecipesAsync();
+            var recipes = await _recipeService.GetAllRecipes();
             return Ok(recipes);
         }
 
         // GET: api/Recipe/{recipeId}
         [HttpGet("{recipeId}")]
-        public async Task<ActionResult<Recipe>> GetRecipeByIdAsync(string recipeId)
+        public async Task<ActionResult<Recipe>> GetRecipeByRecipeId(string recipeId)
         {
-            var recipe = await _recipeService.GetRecipeByIdAsync(recipeId);
+            var recipe = await _recipeService.GetRecipeByRecipeId(recipeId);
             if (recipe == null)
             {
                 return NotFound($"Recipe with ID {recipeId} not found.");
@@ -37,27 +37,27 @@ namespace RecipeManagementService.Presentation.Controllers
 
         // POST: api/Recipe
         [HttpPost]
-        public async Task<IActionResult> CreateRecipeAsync([FromBody] Recipe recipe)
+        public async Task<IActionResult> CreateRecipe([FromBody] Recipe recipe)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await _recipeService.CreateRecipeAsync(recipe);
-            return CreatedAtAction(nameof(GetRecipeByIdAsync), new { recipeId = recipe.RecipeId }, recipe);
+            await _recipeService.CreateRecipe(recipe);
+            return CreatedAtAction(nameof(GetRecipeByRecipeId), new { recipeId = recipe.RecipeId }, recipe);
         }
 
         // PUT: api/Recipe/{recipeId}
         [HttpPut("{recipeId}")]
-        public async Task<IActionResult> UpdateRecipeAsync(string recipeId, [FromBody] Recipe updatedRecipe)
+        public async Task<IActionResult> UpdateRecipe(string recipeId, [FromBody] Recipe updatedRecipe)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var success = await _recipeService.UpdateRecipeAsync(recipeId, updatedRecipe);
+            var success = await _recipeService.UpdateRecipe(recipeId, updatedRecipe);
             if (!success)
             {
                 return NotFound($"Recipe with ID {recipeId} not found.");
@@ -68,9 +68,9 @@ namespace RecipeManagementService.Presentation.Controllers
 
         // DELETE: api/Recipe/{recipeId}
         [HttpDelete("{recipeId}")]
-        public async Task<IActionResult> DeleteRecipeAsync(string recipeId)
+        public async Task<IActionResult> DeleteRecipe(string recipeId)
         {
-            var success = await _recipeService.DeleteRecipeAsync(recipeId);
+            var success = await _recipeService.DeleteRecipe(recipeId);
             if (!success)
             {
                 return NotFound($"Recipe with ID {recipeId} not found.");

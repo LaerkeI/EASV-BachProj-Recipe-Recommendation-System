@@ -14,24 +14,24 @@ namespace RecipeManagementService.Infrastructure.Repositories
             _recipesCollection = database.GetCollection<Recipe>("Recipes");
         }
 
-        public async Task<List<Recipe>> GetAllRecipesAsync()
+        public async Task<List<Recipe>> GetAllRecipes()
         {
             return await _recipesCollection.Find(r => true).ToListAsync();
         }
 
-        public async Task<Recipe?> GetRecipeByIdAsync(string recipeId)
+        public async Task<Recipe?> GetRecipeByRecipeId(string recipeId)
         {
             return await _recipesCollection
                 .Find(r => r.RecipeId == recipeId)
                 .FirstOrDefaultAsync();
         }
 
-        public async Task CreateRecipeAsync(Recipe recipe)
+        public async Task CreateRecipe(Recipe recipe)
         {
             await _recipesCollection.InsertOneAsync(recipe);
         }
 
-        public async Task<bool> UpdateRecipeAsync(string recipeId, Recipe updatedRecipe)
+        public async Task<bool> UpdateRecipe(string recipeId, Recipe updatedRecipe)
         {
             var update = Builders<Recipe>.Update
                 .Set(r => r.Name, updatedRecipe.Name)
@@ -48,7 +48,7 @@ namespace RecipeManagementService.Infrastructure.Repositories
             return result.MatchedCount > 0;
         }
 
-        public async Task<bool> DeleteRecipeAsync(string recipeId)
+        public async Task<bool> DeleteRecipe(string recipeId)
         {
             var result = await _recipesCollection.DeleteOneAsync(r => r.RecipeId == recipeId);
             return result.DeletedCount > 0;

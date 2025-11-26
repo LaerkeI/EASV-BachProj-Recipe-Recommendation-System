@@ -4,10 +4,10 @@ namespace RecipeManagementService.Domain.Interfaces
 {
     public interface IRecipeService
     {
-        Task<List<Recipe>> GetAllRecipesAsync();
-        Task<Recipe?> GetRecipeByIdAsync(string recipeId);
-        Task CreateRecipeAsync(Recipe recipe);
-        Task<bool> UpdateRecipeAsync(string recipeId, Recipe updatedRecipe);
-        Task<bool> DeleteRecipeAsync(string recipeId);
+        Task<List<Recipe>> GetAllRecipes();
+        Task<Recipe?> GetRecipeByRecipeId(string recipeId);
+        Task CreateRecipe(Recipe recipe);
+        Task<bool> UpdateRecipe(string recipeId, Recipe updatedRecipe);
+        Task<bool> DeleteRecipe(string recipeId);
     }
 }
