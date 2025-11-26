@@ -1,6 +1,7 @@
 using MongoDB.Driver;
 using RecipeManagementService.Application.Services;
 using RecipeManagementService.Domain.Interfaces;
+using RecipeManagementService.Infrastructure.Messaging;
 using RecipeManagementService.Infrastructure.Repositories;
 
 namespace RecipeManagementService
@@ -23,6 +24,8 @@ namespace RecipeManagementService
 
                 return new MongoClient(mongoConnectionString);
             });
+
+            builder.Services.AddScoped<IKafkaProducer, KafkaProducer>();
 
             builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
 
