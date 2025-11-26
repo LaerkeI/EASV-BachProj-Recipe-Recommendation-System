@@ -5,7 +5,7 @@ namespace RecipeManagementService.Domain.Entities
 {
     public class Recipe
     {
-        [BsonId]
+        [BsonId] // MongoDB _id field
         [BsonRepresentation(BsonType.ObjectId)]
         public string? RecipeId { get; set; }
 
