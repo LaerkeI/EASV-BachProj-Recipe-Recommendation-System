@@ -1,24 +1,26 @@
+using RecommendationGraphProjectionService.Infrastructure.Messaging;
+
 namespace RecommendationGraphProjectionService
 {
     public class Worker : BackgroundService
     {
+        private readonly IKafkaConsumer _consumer;
         private readonly ILogger<Worker> _logger;
 
-        public Worker(ILogger<Worker> logger)
+        public Worker(IKafkaConsumer consumer, ILogger<Worker> logger)
         {
+            _consumer = consumer;
             _logger = logger;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while (!stoppingToken.IsCancellationRequested)
-            {
-                if (_logger.IsEnabled(LogLevel.Information))
-                {
-                    _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                }
-                await Task.Delay(1000, stoppingToken);
-            }
+            _logger.LogInformation("RecommendationGraphProjectionService started.");
+
+            await _consumer.StartAsync(stoppingToken);
+
+            _logger.LogInformation("Kafka consumer running...");
         }
     }
+
 }

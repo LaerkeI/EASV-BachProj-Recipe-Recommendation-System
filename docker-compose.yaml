@@ -21,6 +21,15 @@ services:
       KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
       CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_NUM_PARTITIONS: 1
+    # volumes:
+    #   - kafka_data:/var/lib/kafka/data
+    #   - ./kafka-init/create-topics.sh:/docker-entrypoint-initdb.d/create-topics.sh
+    healthcheck:
+      test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/9092"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
     networks:
       - recipe_recommendation_network
 
@@ -37,32 +46,35 @@ services:
     networks:
       - recipe_recommendation_network
 
-#   recommendation_graph:
-#     container_name: recommendation_graph
-#     image: neo4j:5.25-community
-#     ports:
-#       - "7474:7474" #Browser UI
-#       - "7687:7687" #Bolt port
-#     environment:
-#       NEO4J_AUTH: neo4j/MySuperStrongPassword123
-#       NEO4J_dbms_default__database: RecommendationGraph
-#     volumes:
-#       - neo4j_recommendation_data:/data/neo4j/recommendation
-#       # Mount the Neo4j folder containing entrypoint + migrations
-#       - ./RecommendationGraphProjectionService/Infrastructure/Neo4j:/var/lib/neo4j/import
-#     entrypoint: ["/var/lib/neo4j/import/neo4j_entrypoint.sh"]
-#     networks:
-#       - recipe_recommendation_network
+  recipe_graph:
+    container_name: recipe_graph
+    image: neo4j:5.25-community
+    ports:
+      - "7474:7474" #Browser UI
+      - "7687:7687" #Bolt port
+    environment:
+      NEO4J_AUTH: neo4j/MySuperStrongPassword123
+      NEO4J_dbms_default__database: recipe-graph
+    volumes:
+      - neo4j_recipe_data:/data/neo4j/recipe
+      # Mount the Neo4j folder containing entrypoint + migrations
+      - ./RecommendationGraphProjectionService/Infrastructure/Neo4j:/var/lib/neo4j/import
+    entrypoint: ["/var/lib/neo4j/import/neo4j_entrypoint.sh"]
+    networks:
+      - recipe_recommendation_network
 
-#   recommendation_graph_projection_service:
-#     container_name: "recommendation_graph_projection_service"
-#     build:
-#       context: .
-#       dockerfile: RecommendationGraphProjectionService/Dockerfile
-#     depends_on:
-#       - recommendation_graph
-#     networks:
-#     - recipe_recommendation_network
+  recipe_graph_projection_service:
+    container_name: "recipe_graph_projection_service"
+    build:
+      context: .
+      dockerfile: RecommendationGraphProjectionService/Dockerfile
+    depends_on:
+      recipe_graph:
+        condition: service_started
+      kafka:
+        condition: service_healthy
+    networks:
+    - recipe_recommendation_network
 
   recipe_management_service:
     container_name: "recipe_management_service"
@@ -123,7 +135,7 @@ services:
 
 volumes:
   kafka_data:
-  neo4j_recommendation_data:
+  neo4j_recipe_data:
   mongo_recipe_data:
 
 networks:
