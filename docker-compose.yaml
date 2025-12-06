@@ -22,9 +22,6 @@ services:
       CLUSTER_ID: MkU3OEVBNTcwNTJENDM2Qk
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_NUM_PARTITIONS: 1
-    # volumes:
-    #   - kafka_data:/var/lib/kafka/data
-    #   - ./kafka-init/create-topics.sh:/docker-entrypoint-initdb.d/create-topics.sh
     healthcheck:
       test: ["CMD", "bash", "-c", "echo > /dev/tcp/localhost/9092"]
       interval: 10s
@@ -46,6 +43,71 @@ services:
     networks:
       - recipe_recommendation_network
 
+  recipe_management_service:
+    container_name: "recipe_management_service"
+    build:
+      context: .
+      dockerfile: RecipeManagementService/Dockerfile
+    ports:
+      - "7001:8080"
+    depends_on:
+      recipe_graph_projection_service:
+        condition: service_started
+      kafka:
+        condition: service_healthy
+    networks:
+    - recipe_recommendation_network
+
+  recommendation_read_service:
+    container_name: "recommendation_read_service"
+    build:
+      context: .
+      dockerfile: RecommendationReadService/Dockerfile
+    ports:
+      - "7002:8080"
+    depends_on:
+      recipe_graph_projection_service:
+        condition: service_started
+      kafka:
+        condition: service_healthy
+    networks:
+      - recipe_recommendation_network
+
+  recipe_graph_projection_service:
+    container_name: "recipe_graph_projection_service"
+    build:
+      context: .
+      dockerfile: RecommendationGraphProjectionService/Dockerfile
+    depends_on:
+      recipe_graph:
+        condition: service_started
+      kafka:
+        condition: service_healthy
+    networks:
+    - recipe_recommendation_network
+
+  recommendation_redis_caching_server:
+    image: redis:latest
+    container_name: recommendation_redis_caching_server
+    ports:
+      - "6379:6379"
+    networks:
+      - recipe_recommendation_network
+
+  recipe_mongodb_server:
+    image: mongodb/mongodb-community-server:7.0.5-ubuntu2204
+    container_name: recipe_mongodb_server
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGODB_INITDB_ROOT_USERNAME=user
+      - MONGODB_INITDB_ROOT_PASSWORD=pass
+    volumes:
+      - mongo_recipe_data:/data/db
+      - ./RecipeManagementService/Infrastructure/MongoDB/Migrations:/docker-entrypoint-initdb.d:ro
+    networks:
+      - recipe_recommendation_network
+
   recipe_graph:
     container_name: recipe_graph
     image: neo4j:5.25-community
@@ -63,74 +125,6 @@ services:
     networks:
       - recipe_recommendation_network
 
-  recipe_graph_projection_service:
-    container_name: "recipe_graph_projection_service"
-    build:
-      context: .
-      dockerfile: RecommendationGraphProjectionService/Dockerfile
-    depends_on:
-      recipe_graph:
-        condition: service_started
-      kafka:
-        condition: service_healthy
-    networks:
-    - recipe_recommendation_network
-
-  recipe_management_service:
-    container_name: "recipe_management_service"
-    build:
-      context: .
-      dockerfile: RecipeManagementService/Dockerfile
-    ports:
-      - "7001:8080"
-    depends_on:
-      - kafka
-    #   - recommendation_graph
-    networks:
-    - recipe_recommendation_network
-    
-  # zookeeper:
-  #   image: confluentinc/cp-zookeeper:7.3.2
-  #   hostname: zookeeper
-  #   container_name: zookeeper
-  #   ports:
-  #     - "2181:2181"
-  #   environment:
-  #     ZOOKEEPER_CLIENT_PORT: 2181
-  #     ZOOKEEPER_SERVER_ID: 1
-  #     ZOOKEEPER_SERVERS: zoo:2888:3888
-  #   networks:
-  #     - recipe_recommendation_network
-
-  # kafka:
-  #   image: confluentinc/cp-kafka:7.3.2
-  #   hostname: kafka
-  #   container_name: kafka
-  #   ports:
-  #     - "9092:9092"
-  #   environment:
-  #     KAFKA_BROKER_ID: 1
-  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-  #     KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
-  #     KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-  #   depends_on:
-  #     - zookeeper
-  #   networks:
-  #     - recipe_recommendation_network
-
-  recipe_mongodb_server:
-    image: mongodb/mongodb-community-server:7.0.5-ubuntu2204
-    container_name: recipe_mongodb_server
-    ports:
-      - "27017:27017"
-    environment:
-      - MONGODB_INITDB_ROOT_USERNAME=user
-      - MONGODB_INITDB_ROOT_PASSWORD=pass
-    volumes:
-      - mongo_recipe_data:/data/db
-      - ./RecipeManagementService/Infrastructure/MongoDB/Migrations:/docker-entrypoint-initdb.d:ro
-    networks:
-      - recipe_recommendation_network
 
 
 volumes:
