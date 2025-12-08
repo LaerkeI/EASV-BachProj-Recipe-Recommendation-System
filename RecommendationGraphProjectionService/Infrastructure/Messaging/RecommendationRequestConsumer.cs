@@ -1,27 +1,31 @@
 ﻿using Confluent.Kafka;
 using RecommendationGraphProjectionService.Application.Events;
 using RecommendationGraphProjectionService.Application.Services;
-using RecommendationGraphProjectionService.Infrastructure.Messaging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace RecommendationGraphProjectionService.Infrastructure.Messaging
 {
-    public class KafkaConsumer : IKafkaConsumer
+    public class RecommendationRequestConsumer : IRecommendationRequestConsumer
     {
         private readonly IRecipeGraphService _graphService;
         private readonly IConsumer<string, string> _consumer;
-        private readonly ILogger<KafkaConsumer> _logger;
+        private readonly ILogger<RecipeEventConsumer> _logger;
 
-        public KafkaConsumer(
+        public RecommendationRequestConsumer(
             IRecipeGraphService graphService,
-            ILogger<KafkaConsumer> logger)
+            ILogger<RecipeEventConsumer> logger)
         {
             _graphService = graphService;
             _logger = logger;
 
             var config = new ConsumerConfig
             {
-                GroupId = "recipe-projection-group",
+                GroupId = "recommendation-group",
                 BootstrapServers = "kafka:29092",
                 AutoOffsetReset = AutoOffsetReset.Earliest
             };
@@ -33,9 +37,7 @@ namespace RecommendationGraphProjectionService.Infrastructure.Messaging
         {
             _consumer.Subscribe(new[]
             {
-                "recipe-created",
-                "recipe-updated",
-                "recipe-deleted"
+                "recommendation-request"
             });
 
             return Task.Run(async () =>
@@ -56,19 +58,10 @@ namespace RecommendationGraphProjectionService.Infrastructure.Messaging
         {
             switch (topic)
             {
-                case "recipe-created":
-                    var created = JsonSerializer.Deserialize<RecipeCreated>(message);
-                    await _graphService.CreateRecipeAsync(created);
-                    break;
-
-                case "recipe-updated":
-                    var updated = JsonSerializer.Deserialize<RecipeUpdated>(message);
-                    await _graphService.UpdateRecipeAsync(updated);
-                    break;
-
-                case "recipe-deleted":
-                    var deletedId = message;
-                    await _graphService.DeleteRecipeAsync(deletedId);
+                case "recommendation-request":
+                    var request = JsonSerializer.Deserialize<RecommendationRequestEvent>(message);
+                    await _graphService.GetRecommendedRecipesAsync(request.CorrelationId, request.Ingredients);
+                    Console.WriteLine("Message received by RecommendationRequestConsumer");
                     break;
             }
         }

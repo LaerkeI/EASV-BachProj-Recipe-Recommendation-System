@@ -1,12 +1,12 @@
-﻿namespace RecipeManagementService.Infrastructure.Messaging.Events
+﻿namespace RecommendationGraphProjectionService.Application.Events
 {
     public class RecipeCreatedEvent
     {
         public string RecipeId { get; init; } = default!;
         public string Name { get; init; } = default!;
         public string Description { get; init; } = default!;
-        public IEnumerable<string> Ingredients { get; init; } = Enumerable.Empty<string>();
-        public IEnumerable<string> Instructions { get; init; } = Enumerable.Empty<string>();
+        public List<string> Ingredients { get; init; } = new();
+        public List<string> Instructions { get; init; } = new();
         public string Category { get; init; } = default!;
 
         //public RecipeCreatedEvent(
@@ -20,8 +20,8 @@
         //    RecipeId = recipeId;
         //    Name = name;
         //    Description = description;
-        //    Ingredients = ingredients;
-        //    Instructions = instructions;
+        //    Ingredients = ingredients.ToList();
+        //    Instructions = instructions.ToList();
         //    Category = category;
         //}
     }

@@ -26,12 +26,15 @@ namespace RecommendationGraphProjectionService
 
             //Register RecommendationGraphService
             builder.Services.AddScoped<IRecipeGraphService, RecipeGraphService>();
-
             builder.Services.AddScoped<IRecipeGraphRepository, RecipeGraphRepository>();
 
-            builder.Services.AddSingleton<IKafkaConsumer, KafkaConsumer>();
+            builder.Services.AddSingleton<IRecipeEventConsumer, RecipeEventConsumer>();
+            builder.Services.AddSingleton<IRecommendationRequestConsumer, RecommendationRequestConsumer>();
 
-            builder.Services.AddHostedService<Worker>();
+            builder.Services.AddScoped<IRecommendationResponseProducer, RecommendationResponseProducer>();
+
+            builder.Services.AddHostedService<RecipeEventConsumerService>();
+            builder.Services.AddHostedService<RecommendationRequestConsumerService>();
 
 
             var host = builder.Build();

@@ -1,7 +1,6 @@
 ﻿using Confluent.Kafka;
 using RecipeManagementService.Domain.Entities;
 using RecipeManagementService.Domain.Interfaces;
-using RecipeManagementService.Infrastructure.Messaging;
 using RecipeManagementService.Infrastructure.Messaging.Events;
 using System.Text.Json;
 
@@ -10,9 +9,9 @@ namespace RecipeManagementService.Application.Services
     public class RecipeService : IRecipeService
     {
         private readonly IRecipeRepository _recipeRepository;
-        private readonly IKafkaProducer _kafkaProducer;
+        private readonly IRecipeEventProducer _kafkaProducer;
 
-        public RecipeService(IRecipeRepository recipeRepository, IKafkaProducer kafkaProducer)
+        public RecipeService(IRecipeRepository recipeRepository, IRecipeEventProducer kafkaProducer)
         {
             _recipeRepository = recipeRepository;            
             _kafkaProducer = kafkaProducer;
@@ -51,12 +50,49 @@ namespace RecipeManagementService.Application.Services
 
         public async Task<bool> UpdateRecipe(string recipeId, Recipe updatedRecipe)
         {
-            return await _recipeRepository.UpdateRecipe(recipeId, updatedRecipe);
+            var success = await _recipeRepository.UpdateRecipe(recipeId, updatedRecipe);
+
+            if (!success)
+                return false;
+
+            var message = new RecipeUpdatedEvent
+            {
+                RecipeId = recipeId,
+                UpdatedName = updatedRecipe.Name,
+                UpdatedDescription = updatedRecipe.Description,
+                UpdatedIngredients = updatedRecipe.Ingredients,
+                UpdatedInstructions = updatedRecipe.Instructions,
+                UpdatedCategory = updatedRecipe.Category
+            };
+
+            await _kafkaProducer.ProduceAsync("recipe-updated", new Message<string, string>
+            {
+                Key = recipeId,
+                Value = JsonSerializer.Serialize(message)
+            });
+
+            return true;
         }
 
         public async Task<bool> DeleteRecipe(string recipeId)
         {
-            return await _recipeRepository.DeleteRecipe(recipeId);
+            var success = await _recipeRepository.DeleteRecipe(recipeId);
+
+            if (!success)
+                return false;
+
+            var message = new RecipeDeletedEvent
+            {
+                RecipeId = recipeId
+            };
+
+            await _kafkaProducer.ProduceAsync("recipe-deleted", new Message<string, string>
+            {
+                Key = recipeId,
+                Value = JsonSerializer.Serialize(message)
+            });
+
+            return true;
         }
     }
 }

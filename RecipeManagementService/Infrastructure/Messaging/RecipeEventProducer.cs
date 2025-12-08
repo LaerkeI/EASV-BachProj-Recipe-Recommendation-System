@@ -3,11 +3,11 @@ using RecipeManagementService.Domain.Interfaces;
 
 namespace RecipeManagementService.Infrastructure.Messaging
 {
-    public class KafkaProducer : IKafkaProducer
+    public class RecipeEventProducer : IRecipeEventProducer
     {
         private readonly IProducer<string, string> _producer;
 
-        public KafkaProducer(IConfiguration config)
+        public RecipeEventProducer(IConfiguration config)
         {
             var producerConfig = new ProducerConfig
             {

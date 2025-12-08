@@ -25,7 +25,7 @@ namespace RecipeManagementService
                 return new MongoClient(mongoConnectionString);
             });
 
-            builder.Services.AddScoped<IKafkaProducer, KafkaProducer>();
+            builder.Services.AddScoped<IRecipeEventProducer, RecipeEventProducer>();
 
             builder.Services.AddScoped<IRecipeRepository, RecipeRepository>();
 

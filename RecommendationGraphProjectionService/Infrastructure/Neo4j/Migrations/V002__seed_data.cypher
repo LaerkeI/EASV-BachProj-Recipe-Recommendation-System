@@ -1,4 +1,6 @@
-// ===== Ingredients =====
+// ============================================
+// Ingredients
+// ============================================
 MERGE (Egg:Ingredient {name: "Egg"})
 MERGE (Flour:Ingredient {name: "Flour"})
 MERGE (Milk:Ingredient {name: "Milk"})
@@ -10,32 +12,80 @@ MERGE (Garlic:Ingredient {name: "Garlic"})
 MERGE (Rice:Ingredient {name: "Rice"})
 MERGE (OliveOil:Ingredient {name: "Olive Oil"})
 
+WITH *
+  
+// ============================================
+// Recipes
+// ============================================
+MERGE (Pancakes:Recipe {
+    id: "6936d30f4171514e0c543c5c",
+    name: "Pancakes",
+    description: "Fluffy homemade pancakes.",
+    instructions: ["Mix ingredients", "Cook on skillet", "Serve with syrup"],
+    category: "Breakfast"
+})
 
-// ===== Recipes =====
-MERGE (Pancakes:Recipe {name: "Pancakes"})
-MERGE (GarlicButterChicken:Recipe {name: "Garlic Butter Chicken"})
-MERGE (GarlicFriedRice:Recipe {name: "Garlic Fried Rice"})
+MERGE (GarlicButterChicken:Recipe {
+    id: "6936d30f4171514e0c543c5d",
+    name: "Garlic Butter Chicken",
+    description: "Juicy chicken in garlic butter sauce.",
+    instructions: ["Season chicken", "Cook chicken", "Add garlic butter sauce"],
+    category: "Dinner"
+})
 
+MERGE (GarlicFriedRice:Recipe {
+    id: "6936d30f4171514e0c543c5e",
+    name: "Garlic Fried Rice",
+    description: "Quick and tasty fried rice with garlic.",
+    instructions: ["Cook rice", "Fry garlic", "Mix together with oil and seasoning"],
+    category: "Lunch"
+})
 
-// ===== Relationships =====
-// Pancakes
-MERGE (Pancakes)-[r1:USES]->(Egg) SET r1.amount = "2 pcs"
-MERGE (Pancakes)-[r2:USES]->(Flour) SET r2.amount = "100 g"
-MERGE (Pancakes)-[r3:USES]->(Milk) SET r3.amount = "200 ml"
-MERGE (Pancakes)-[r4:USES]->(Sugar) SET r4.amount = "1 tbsp"
-MERGE (Pancakes)-[r5:USES]->(Butter) SET r5.amount = "1 tbsp"
+WITH *
+  
+// ============================================
+// Pancakes Ingredient Relationships
+// ============================================
+MATCH (p:Recipe {id: "6936d30f4171514e0c543c5c"})
+MATCH (egg:Ingredient {name: "Egg"})
+MATCH (flour:Ingredient {name: "Flour"})
+MATCH (milk:Ingredient {name: "Milk"})
+MATCH (sugar:Ingredient {name: "Sugar"})
+MATCH (butter:Ingredient {name: "Butter"})
+MERGE (p)-[:USES]->(egg)
+MERGE (p)-[:USES]->(flour)
+MERGE (p)-[:USES]->(milk)
+MERGE (p)-[:USES]->(sugar)
+MERGE (p)-[:USES]->(butter)
 
+WITH *
 
-// Garlic Butter Chicken
-MERGE (GarlicButterChicken)-[r6:USES]->(ChickenBreast) SET r6.amount = "1 piece"
-MERGE (GarlicButterChicken)-[r7:USES]->(Garlic) SET r7.amount = "2 cloves"
-MERGE (GarlicButterChicken)-[r8:USES]->(Butter) SET r8.amount = "1 tbsp"
-MERGE (GarlicButterChicken)-[r9:USES]->(OliveOil) SET r9.amount = "1 tbsp"
-MERGE (GarlicButterChicken)-[r10:USES]->(Salt) SET r10.amount = "1 pinch"
+// ============================================
+// Garlic Butter Chicken Ingredient Relationships
+// ============================================
+MATCH (c:Recipe {id: "6936d30f4171514e0c543c5d"})
+MATCH (chicken:Ingredient {name: "Chicken Breast"})
+MATCH (garlic:Ingredient {name: "Garlic"})
+MATCH (butter:Ingredient {name: "Butter"})
+MATCH (oil:Ingredient {name: "Olive Oil"})
+MATCH (salt:Ingredient {name: "Salt"})
+MERGE (c)-[:USES]->(chicken)
+MERGE (c)-[:USES]->(garlic)
+MERGE (c)-[:USES]->(butter)
+MERGE (c)-[:USES]->(oil)
+MERGE (c)-[:USES]->(salt)
 
+WITH *
 
-// Garlic Fried Rice
-MERGE (GarlicFriedRice)-[r11:USES]->(Rice) SET r11.amount = "1 cup"
-MERGE (GarlicFriedRice)-[r12:USES]->(Garlic) SET r12.amount = "3 cloves"
-MERGE (GarlicFriedRice)-[r13:USES]->(OliveOil) SET r13.amount = "1 tbsp"
-MERGE (GarlicFriedRice)-[r14:USES]->(Salt) SET r14.amount = "1 pinch"
+// ============================================
+// Garlic Fried Rice Ingredient Relationships
+// ============================================
+MATCH (r:Recipe {id: "6936d30f4171514e0c543c5e"})
+MATCH (rice:Ingredient {name: "Rice"})
+MATCH (garlic:Ingredient {name: "Garlic"})
+MATCH (oil:Ingredient {name: "Olive Oil"})
+MATCH (salt:Ingredient {name: "Salt"})
+MERGE (r)-[:USES]->(rice)
+MERGE (r)-[:USES]->(garlic)
+MERGE (r)-[:USES]->(oil)
+MERGE (r)-[:USES]->(salt)

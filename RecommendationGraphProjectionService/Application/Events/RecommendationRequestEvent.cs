@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace RecommendationGraphProjectionService.Application.Events
 {
-    public class RecipeDeleted
+    public class RecommendationRequestEvent
     {
-        public string RecipeId { get; init; } = default!;
-
-        public RecipeDeleted(string recipeId)
-        {
-            RecipeId = recipeId;
-        }
+        public string CorrelationId { get; set; } = default!;
+        public List<string> Ingredients { get; set; } = default!;
     }
+
 }

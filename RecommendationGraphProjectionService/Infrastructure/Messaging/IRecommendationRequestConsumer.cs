@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RecommendationGraphProjectionService.Infrastructure.Messaging
 {
-    public interface IKafkaConsumer
+    public interface IRecommendationRequestConsumer
     {
         Task StartAsync(CancellationToken cancellationToken);
     }
