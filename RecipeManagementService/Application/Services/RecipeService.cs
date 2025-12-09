@@ -9,12 +9,12 @@ namespace RecipeManagementService.Application.Services
     public class RecipeService : IRecipeService
     {
         private readonly IRecipeRepository _recipeRepository;
-        private readonly IRecipeEventProducer _kafkaProducer;
+        private readonly IRecipeEventProducer _recipeEventProducer;
 
-        public RecipeService(IRecipeRepository recipeRepository, IRecipeEventProducer kafkaProducer)
+        public RecipeService(IRecipeRepository recipeRepository, IRecipeEventProducer recipeEventProducer)
         {
             _recipeRepository = recipeRepository;            
-            _kafkaProducer = kafkaProducer;
+            _recipeEventProducer = recipeEventProducer;
         }
 
         public async Task<List<Recipe>> GetAllRecipes()
@@ -41,7 +41,7 @@ namespace RecipeManagementService.Application.Services
                 Category = recipe.Category
             };
 
-            await _kafkaProducer.ProduceAsync("recipe-created", new Message<string, string>
+            await _recipeEventProducer.ProduceAsync("recipe-created", new Message<string, string>
             {
                 Key = recipe.RecipeId,
                 Value = JsonSerializer.Serialize(message)
@@ -65,7 +65,7 @@ namespace RecipeManagementService.Application.Services
                 UpdatedCategory = updatedRecipe.Category
             };
 
-            await _kafkaProducer.ProduceAsync("recipe-updated", new Message<string, string>
+            await _recipeEventProducer.ProduceAsync("recipe-updated", new Message<string, string>
             {
                 Key = recipeId,
                 Value = JsonSerializer.Serialize(message)
@@ -86,7 +86,7 @@ namespace RecipeManagementService.Application.Services
                 RecipeId = recipeId
             };
 
-            await _kafkaProducer.ProduceAsync("recipe-deleted", new Message<string, string>
+            await _recipeEventProducer.ProduceAsync("recipe-deleted", new Message<string, string>
             {
                 Key = recipeId,
                 Value = JsonSerializer.Serialize(message)

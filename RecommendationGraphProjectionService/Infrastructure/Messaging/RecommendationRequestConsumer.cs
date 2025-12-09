@@ -12,15 +12,15 @@ namespace RecommendationGraphProjectionService.Infrastructure.Messaging
 {
     public class RecommendationRequestConsumer : IRecommendationRequestConsumer
     {
-        private readonly IRecipeGraphService _graphService;
+        private readonly IRecipeGraphService _recipeGraphService;
         private readonly IConsumer<string, string> _consumer;
         private readonly ILogger<RecipeEventConsumer> _logger;
 
         public RecommendationRequestConsumer(
-            IRecipeGraphService graphService,
+            IRecipeGraphService recipeGraphService,
             ILogger<RecipeEventConsumer> logger)
         {
-            _graphService = graphService;
+            _recipeGraphService = recipeGraphService;
             _logger = logger;
 
             var config = new ConsumerConfig
@@ -60,7 +60,7 @@ namespace RecommendationGraphProjectionService.Infrastructure.Messaging
             {
                 case "recommendation-request":
                     var request = JsonSerializer.Deserialize<RecommendationRequestEvent>(message);
-                    await _graphService.GetRecommendedRecipesAsync(request.CorrelationId, request.Ingredients);
+                    await _recipeGraphService.GetRecommendedRecipesAsync(request.CorrelationId, request.Ingredients);
                     Console.WriteLine("Message received by RecommendationRequestConsumer");
                     break;
             }
