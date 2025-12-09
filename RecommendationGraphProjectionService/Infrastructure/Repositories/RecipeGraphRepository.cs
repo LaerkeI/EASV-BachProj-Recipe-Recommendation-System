@@ -82,6 +82,7 @@ namespace RecommendationGraphProjectionService.Infrastructure.Repositories
                            recipeIngredients,
                            [x IN recipeIngredients WHERE x IN ingredientsFromFridge] AS matched,
                            [x IN recipeIngredients WHERE NOT x IN ingredientsFromFridge] AS missing
+                      WHERE size(matched) > 0 
                       RETURN r.id AS recipeId,
                              r.name AS name,
                              r.description AS description,
