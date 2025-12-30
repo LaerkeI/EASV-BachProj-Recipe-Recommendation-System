@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RecommendationGraphProjectionService.Application.Events
+namespace RecipeGraphProjectionService.Application.Events
 {
     public class RecipeUpdatedEvent
     {

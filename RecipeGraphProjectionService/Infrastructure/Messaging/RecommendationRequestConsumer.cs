@@ -1,6 +1,6 @@
 ﻿using Confluent.Kafka;
-using RecommendationGraphProjectionService.Application.Events;
-using RecommendationGraphProjectionService.Application.Services;
+using RecipeGraphProjectionService.Application.Events;
+using RecipeGraphProjectionService.Application.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace RecommendationGraphProjectionService.Infrastructure.Messaging
+namespace RecipeGraphProjectionService.Infrastructure.Messaging
 {
     public class RecommendationRequestConsumer : IRecommendationRequestConsumer
     {

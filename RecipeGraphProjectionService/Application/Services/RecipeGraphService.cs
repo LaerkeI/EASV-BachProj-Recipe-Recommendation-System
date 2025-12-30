@@ -1,13 +1,13 @@
 ﻿using Confluent.Kafka;
 using Microsoft.Extensions.Logging;
-using RecommendationGraphProjectionService.Application.Events;
-using RecommendationGraphProjectionService.Infrastructure.Messaging;
-using RecommendationGraphProjectionService.Infrastructure.Repositories;
+using RecipeGraphProjectionService.Application.Events;
+using RecipeGraphProjectionService.Infrastructure.Messaging;
+using RecipeGraphProjectionService.Infrastructure.Repositories;
 using System.Collections.Generic;
 using System.Text.Json;
 using static Confluent.Kafka.ConfigPropertyNames;
 
-namespace RecommendationGraphProjectionService.Application.Services
+namespace RecipeGraphProjectionService.Application.Services
 {
     public class RecipeGraphService : IRecipeGraphService
     {

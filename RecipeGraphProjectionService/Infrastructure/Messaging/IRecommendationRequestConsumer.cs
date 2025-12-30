@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RecommendationGraphProjectionService.Infrastructure.Messaging
+namespace RecipeGraphProjectionService.Infrastructure.Messaging
 {
-    public interface IRecipeEventConsumer
+    public interface IRecommendationRequestConsumer
     {
         Task StartAsync(CancellationToken cancellationToken);
     }

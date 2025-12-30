@@ -1,4 +1,4 @@
-﻿namespace RecommendationGraphProjectionService.Application.Events
+﻿namespace RecipeGraphProjectionService.Application.Events
 {
     public class RecipeDeletedEvent
     {

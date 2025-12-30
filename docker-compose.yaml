@@ -77,7 +77,7 @@ services:
     container_name: "recipe_graph_projection_service"
     build:
       context: .
-      dockerfile: RecommendationGraphProjectionService/Dockerfile
+      dockerfile: RecipeGraphProjectionService/Dockerfile
     depends_on:
       recipe_graph:
         condition: service_started
@@ -120,7 +120,7 @@ services:
     volumes:
       - neo4j_recipe_data:/data/neo4j/recipe
       # Mount the Neo4j folder containing entrypoint + migrations
-      - ./RecommendationGraphProjectionService/Infrastructure/Neo4j:/var/lib/neo4j/import
+      - ./RecipeGraphProjectionService/Infrastructure/Neo4j:/var/lib/neo4j/import
     entrypoint: ["/var/lib/neo4j/import/neo4j_entrypoint.sh"]
     networks:
       - recipe_recommendation_network

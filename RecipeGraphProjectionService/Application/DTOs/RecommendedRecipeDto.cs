@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RecommendationGraphProjectionService.Application.DTOs
+namespace RecipeGraphProjectionService.Application.DTOs
 {
     public class RecommendedRecipeDto
     {

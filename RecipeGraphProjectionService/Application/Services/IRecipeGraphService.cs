@@ -1,6 +1,6 @@
-﻿using RecommendationGraphProjectionService.Application.Events;
+﻿using RecipeGraphProjectionService.Application.Events;
 
-namespace RecommendationGraphProjectionService.Application.Services;
+namespace RecipeGraphProjectionService.Application.Services;
 
 public interface IRecipeGraphService
 {

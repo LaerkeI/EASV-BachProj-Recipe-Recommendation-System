@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>dotnet-RecommendationGraphProjectionService-449a0645-b7df-423e-894d-da8dcb6d612e</UserSecretsId>
+    <UserSecretsId>dotnet-RecipeGraphProjectionService-449a0645-b7df-423e-894d-da8dcb6d612e</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 

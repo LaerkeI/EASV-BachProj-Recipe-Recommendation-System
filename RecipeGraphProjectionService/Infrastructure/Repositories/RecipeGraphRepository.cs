@@ -1,8 +1,8 @@
 ﻿using Neo4j.Driver;
-using RecommendationGraphProjectionService.Application.DTOs;
-using RecommendationGraphProjectionService.Application.Events;
+using RecipeGraphProjectionService.Application.DTOs;
+using RecipeGraphProjectionService.Application.Events;
 
-namespace RecommendationGraphProjectionService.Infrastructure.Repositories
+namespace RecipeGraphProjectionService.Infrastructure.Repositories
 {
     public class RecipeGraphRepository : IRecipeGraphRepository
     {

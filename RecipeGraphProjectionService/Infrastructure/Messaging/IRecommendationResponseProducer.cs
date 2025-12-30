@@ -1,6 +1,6 @@
 ﻿using Confluent.Kafka;
 
-namespace RecommendationGraphProjectionService.Infrastructure.Messaging
+namespace RecipeGraphProjectionService.Infrastructure.Messaging
 {
     public interface IRecommendationResponseProducer
     {

@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "RecommendationGraphProjectionService": {
+    "RecipeGraphProjectionService": {
       "commandName": "Project",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development"

@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeManagementService", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecommendationReadService", "RecommendationReadService\RecommendationReadService.csproj", "{D5491ECC-7D9C-4383-85F8-DECA8CB911DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecommendationGraphProjectionService", "RecommendationGraphProjectionService\RecommendationGraphProjectionService.csproj", "{BF9D6228-0E5A-492D-AE48-6B2610512386}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecipeGraphProjectionService", "RecipeGraphProjectionService\RecipeGraphProjectionService.csproj", "{BF9D6228-0E5A-492D-AE48-6B2610512386}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

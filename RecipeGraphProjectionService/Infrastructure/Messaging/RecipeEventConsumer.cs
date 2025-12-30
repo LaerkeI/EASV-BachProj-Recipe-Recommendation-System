@@ -1,10 +1,10 @@
 ﻿using Confluent.Kafka;
-using RecommendationGraphProjectionService.Application.Events;
-using RecommendationGraphProjectionService.Application.Services;
-using RecommendationGraphProjectionService.Infrastructure.Messaging;
+using RecipeGraphProjectionService.Application.Events;
+using RecipeGraphProjectionService.Application.Services;
+using RecipeGraphProjectionService.Infrastructure.Messaging;
 using System.Text.Json;
 
-namespace RecommendationGraphProjectionService.Infrastructure.Messaging
+namespace RecipeGraphProjectionService.Infrastructure.Messaging
 {
     public class RecipeEventConsumer : IRecipeEventConsumer
     {

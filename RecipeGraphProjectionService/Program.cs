@@ -1,9 +1,9 @@
 using Neo4j.Driver;
-using RecommendationGraphProjectionService.Application.Services;
-using RecommendationGraphProjectionService.Infrastructure.Messaging;
-using RecommendationGraphProjectionService.Infrastructure.Repositories;
+using RecipeGraphProjectionService.Application.Services;
+using RecipeGraphProjectionService.Infrastructure.Messaging;
+using RecipeGraphProjectionService.Infrastructure.Repositories;
 
-namespace RecommendationGraphProjectionService
+namespace RecipeGraphProjectionService
 {
     public class Program
     {
@@ -24,7 +24,7 @@ namespace RecommendationGraphProjectionService
                 );
             });
 
-            //Register RecommendationGraphService
+            //Register RecipeGraphService
             builder.Services.AddScoped<IRecipeGraphService, RecipeGraphService>();
             builder.Services.AddScoped<IRecipeGraphRepository, RecipeGraphRepository>();
 
