@@ -67,16 +67,16 @@ namespace RecommendationReadService.Application.Services
         // ------------------------------------------------------------
         // STEP 3 — Called by Kafka consumer when recommendation is ready
         // ------------------------------------------------------------
-        public async Task CacheRecommendationResponse(RecommendationResponseEvent evt)
+        public async Task CacheRecommendationResponse(string correlationId, List<RecommendedRecipeDto> recommendedRecipes)
         {
             var completedState = new RecommendationStateDto
             {
-                CorrelationId = evt.CorrelationId,
+                CorrelationId = correlationId,
                 Status = "COMPLETE",
-                Recipes = evt.RecommendedRecipes
+                Recipes = recommendedRecipes
             };
 
-            await _recommendationRepository.SaveRecommendationState(evt.CorrelationId, completedState);
+            await _recommendationRepository.SaveRecommendationState(correlationId, completedState);
         }
     }
 }

@@ -60,7 +60,7 @@ public class RecommendationResponseConsumer : BackgroundService
             var response = JsonSerializer.Deserialize<RecommendationResponseEvent>(message);
             if (response != null)
             {
-                await _recommendationService.CacheRecommendationResponse(response);
+                await _recommendationService.CacheRecommendationResponse(response.CorrelationId, response.RecommendedRecipes);
             }
         }
         catch (Exception ex)

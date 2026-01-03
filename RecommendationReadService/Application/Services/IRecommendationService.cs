@@ -8,6 +8,6 @@ namespace RecommendationReadService.Application.Services
     {
         Task<string> StartRecommendationRequest(List<string> ingredients);
         Task<RecommendationStateDto?> GetRecommendationStatus(string correlationId);
-        Task CacheRecommendationResponse(RecommendationResponseEvent evt);
+        Task CacheRecommendationResponse(string correlationId, List<RecommendedRecipeDto> recommendedRecipes);
     }
 }
